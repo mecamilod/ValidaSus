@@ -1,124 +1,125 @@
-// Base de dados em lote estruturada (Simulando o processamento do arquivo de texto)
-const baseProcedimentos = [
-    {
-        classes_deficiencia: "Não se Aplica",
-        codigo: "0309050014",
-        nome: "SESSÃO DE ACUPUNTURA APLICAÇÃO DE VENTOSAS / MOXA",
-        complexidade: "MC - Média Complexidade",
-        modalidade: "01 - Ambulatorial, 02 - Hospitalar, 03 - Hospital Dia, 06 - Atenção Domiciliar",
-        registro: "01 - BPA (Consolidado), 02 - BPA (Individualizado), 05 - AIH (Proc. Secundário)",
-        restricao: "Idade Mínima: 0 Mes(es) | Idade Máxima: 130 Ano(s)",
-        cids: ["F430", "F431", "F432", "G430", "G431", "G442", "M541", "M542", "M544", "M545", "M791", "R51", "R520", "R521", "R522"],
-        valor: "Valor Ambulatorial SA: 3.67 | Valor Ambulatorial Total: 3.67"
-    },
-    {
-        classes_deficiencia: "Não se Aplica",
-        codigo: "0309050022",
-        nome: "SESSÃO DE ACUPUNTURA COM INSERÇÃO DE AGULHAS",
-        complexidade: "MC - Média Complexidade",
-        modalidade: "01 - Ambulatorial, 02 - Hospitalar, 03 - Hospital Dia, 06 - Atenção Domiciliar",
-        registro: "01 - BPA (Consolidado), 02 - BPA (Individualizado), 05 - AIH (Proc. Secundário)",
-        restricao: "Idade Mínima: 0 Mes(es) | Idade Máxima: 130 Ano(s)",
-        cids: ["Não se Aplica / Práticas Integrativas"],
-        valor: "Valor Ambulatorial SA: 4.13 | Valor Ambulatorial Total: 4.13"
-    },
-    {
-        classes_deficiencia: "Física, Sensório-Motora (Múltiplas Deficiências)",
-        codigo: "0301070130",
-        nome: "TRATAMENTO INTENSIVO DE PACIENTE EM REABILITAÇÃO FÍSICA (2 TURNOS PACIENTE-DIA)",
-        complexidade: "MC - Média Complexidade",
-        modalidade: "01 - Ambulatorial",
-        registro: "02 - BPA (Individualizado)",
-        restricao: "Idade Mínima: 0 Mes(es) | Idade Máxima: 130 Ano(s)",
-        cids: ["A300", "B91", "G20", "G35", "G800", "G810", "I64", "M210", "S141", "Z890"],
-        valor: "Valor Ambulatorial SA: 33.70 | Valor Ambulatorial Total: 33.70"
-    },
-    {
-        classes_deficiencia: "Visual",
-        codigo: "0301070148",
-        nome: "TREINO DE ORIENTAÇÃO E MOBILIDADE",
-        complexidade: "MC - Média Complexidade",
-        modalidade: "01 - Ambulatorial",
-        registro: "02 - BPA (Individualizado)",
-        restricao: "Idade Mínima: 0 Mes(es) | Idade Máxima: 130 Ano(s)",
-        cids: ["H540", "H541"],
-        valor: "Valor Ambulatorial SA: 6.00 | Valor Ambulatorial Total: 6.00"
-    }
-];
+// app.js
 
-// Elementos do DOM
-const gridProcedimentos = document.getElementById('grid-dinamico-procedimentos');
-const contadorResultados = document.getElementById('contador-resultados');
-const inputBusca = document.getElementById('input-busca');
-const filtroDeficiencia = document.getElementById('filtro-deficiencia');
-const btnBuscar = document.getElementById('btn-buscar');
+document.addEventListener('DOMContentLoaded', () => {
+    inicializarApp();
+});
 
-// Função de Renderização dos Cards
+const selectClasse = document.getElementById('select-classe');
+const selectForma = document.getElementById('select-forma');
+const searchInput = document.getElementById('search-input');
+const gridProcedimentos = document.getElementById('grid-procedimentos');
+const counterProcedimentos = document.getElementById('counter-procedimentos');
+
+function inicializarApp() {
+    // Popula o seletor de Classes
+    Object.keys(baseProcedimentosSIGTAP).forEach(classe => {
+        const opt = document.createElement('option');
+        opt.value = classe;
+        opt.textContent = classe;
+        selectClasse.appendChild(opt);
+    });
+
+    // Listener para encadeamento do seletor de Forma de Organização
+    selectClasse.addEventListener('change', () => {
+        const classeSel = selectClasse.value;
+        selectForma.innerHTML = '<option value="todos">-- Todas as Formas --</option>';
+        
+        if (classeSel !== 'todos') {
+            selectForma.disabled = false;
+            const forma = baseProcedimentosSIGTAP[classeSel].forma_organizacao;
+            const opt = document.createElement('option');
+            opt.value = forma;
+            opt.textContent = forma;
+            selectForma.appendChild(opt);
+        } else {
+            selectForma.disabled = true;
+        }
+        filtrarERenderizar();
+    });
+
+    selectForma.addEventListener('change', filtrarERenderizar);
+    searchInput.addEventListener('input', filtrarERenderizar);
+
+    // Renderização Inicial (Geral)
+    filtrarERenderizar();
+}
+
+function filtrarERenderizar() {
+    const classeFiltro = selectClasse.value;
+    const formaFiltro = selectForma.value;
+    const buscaTexto = searchInput.value.toLowerCase().trim();
+
+    let listagemFinal = [];
+
+    // Varre a estrutura do banco de dados para consolidar os itens
+    Object.keys(baseProcedimentosSIGTAP).forEach(classeNome => {
+        if (classeFiltro !== 'todos' && classeFiltro !== classeNome) return;
+
+        const classeObjeto = baseProcedimentosSIGTAP[classeNome];
+        if (formaFiltro !== 'todos' && formaFiltro !== classeObjeto.forma_organizacao) return;
+
+        classeObjeto.procedimentos.forEach(proc => {
+            // Realiza busca cruzada e inteligente (Nome, código, CIDs ou CBOs)
+            const matchesTexto = buscaTexto === "" || 
+                proc.nome.toLowerCase().includes(buscaTexto) ||
+                proc.codigo.includes(buscaTexto) ||
+                proc.descricao.toLowerCase().includes(buscaTexto) ||
+                proc.cids.some(cid => cid.toLowerCase().includes(buscaTexto)) ||
+                proc.cbos.some(cbo => cbo.toLowerCase().includes(buscaTexto));
+
+            if (matchesTexto) {
+                listagemFinal.push({
+                    ...proc,
+                    classe: classeNome,
+                    forma: classeObjeto.forma_organizacao
+                });
+            }
+        });
+    });
+
+    renderizarCards(listagemFinal);
+}
+
 function renderizarCards(procedimentos) {
     gridProcedimentos.innerHTML = '';
-    
+    counterProcedimentos.textContent = `Listando ${procedimentos.length} procedimento(s)`;
+
     if (procedimentos.length === 0) {
-        gridProcedimentos.innerHTML = '<p class="no-results">Nenhum procedimento correspondente encontrado.</p>';
-        contadorResultados.textContent = '0 procedimentos encontrados';
+        gridProcedimentos.innerHTML = '<div class="card-proc" style="padding: 2rem; text-align: center; color: var(--text-muted);">Nenhum procedimento correspondente aos critérios de validação.</div>';
         return;
     }
 
-    procedimentos.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'card-procedimento';
-        
+    procedimentos.forEach(proc => {
+        const card = document.createElement('article');
+        card.className = 'card-proc';
+
+        // Geração das pílulas de CIDs e CBOs
+        const cidsHtml = proc.cids.map(cid => `<span class="pill-cid">${cid}</span>`).join('');
+        const cbosHtml = proc.cbos.map(cbo => `<span class="pill-cbo">${cbo}</span>`).join('');
+
         card.innerHTML = `
-            <div>
-                <span class="card-badge-def">${item.classes_deficiencia}</span>
-                <h3>${item.nome}</h3>
-                <span class="card-codigo">Código SIGTAP: ${item.codigo}</span>
+            <div class="card-main-info">
+                <div class="card-meta-top">
+                    <span>${proc.classe}</span>
+                    <span>Forma: ${proc.forma}</span>
+                </div>
+                <h3>${proc.nome}</h3>
+                <span class="card-codigo-sus">Código SIGTAP: ${proc.codigo}</span>
+                <p class="card-desc">${proc.descricao}</p>
                 
-                <div class="card-detalhes">
-                    <p><strong>Complexidade:</strong> ${item.complexidade}</p>
-                    <p><strong>Modalidade:</strong> ${item.modalidade}</p>
-                    <p><strong>Instrumento de Registro:</strong> ${item.registro}</p>
-                    <p><strong>CIDs Cadastrados:</strong> ${item.cids.slice(0, 5).join(', ')}${item.cids.length > 5 ? '...' : ''}</p>
+                <div class="spec-grid">
+                    <div class="spec-item"><strong>Complexidade</strong>${proc.complexidade}</div>
+                    <div class="spec-item"><strong>Instrumento de Registro</strong>${proc.instrumento_registro}</div>
+                    <div class="spec-item"><strong>Restrição Etária</strong>${proc.restricao_etaria}</div>
+                    <div class="spec-item"><strong>CBOs Autorizados</strong><div class="pill-container">${cbosHtml}</div></div>
+                    <div class="spec-item" style="grid-column: span 2;"><strong>CIDs Vinculados Suscetíveis</strong><div class="pill-container">${cidsHtml}</div></div>
                 </div>
             </div>
             <div class="card-footer-valor">
-                ${item.valor}
+                <span class="valor-label">VALOR DO REPASSE AMBULATORIAL:</span>
+                <span class="valor-dinheiro">R$ ${proc.valor_ambulatorial.toFixed(2).replace('.', ',')}</span>
             </div>
         `;
         gridProcedimentos.appendChild(card);
     });
-
-    contadorResultados.textContent = `${procedimentos.length} procedimento(s) listado(s)`;
 }
-
-// Lógica de Filtro e Busca Combinada
-function filtrarProcedimentos() {
-    const termoBusca = inputBusca.value.toLowerCase().trim();
-    const filtroDef = filtroDeficiencia.value;
-
-    const dadosFiltrados = baseProcedimentos.filter(item => {
-        // Validação da Busca Textual (Nome, Código ou CID)
-        const correspondeBusca = 
-            item.nome.toLowerCase().includes(termoBusca) || 
-            item.codigo.includes(termoBusca) || 
-            item.cids.some(cid => cid.toLowerCase().includes(termoBusca));
-
-        // Validação do Filtro de Categoria
-        const correspondeFiltro = 
-            filtroDef === 'todos' || 
-            item.classes_deficiencia.toLowerCase().includes(filtroDef.toLowerCase());
-
-        return correspondeBusca && correspondeFiltro;
-    });
-
-    renderizarCards(dadosFiltrados);
-}
-
-// Event Listeners
-btnBuscar.addEventListener('click', filtrarProcedimentos);
-inputBusca.addEventListener('keyup', (e) => { if (e.key === 'Enter') filtrarProcedimentos(); });
-filtroDeficiencia.addEventListener('change', filtrarProcedimentos);
-
-// Inicialização da Interface
-document.addEventListener('DOMContentLoaded', () => {
-    renderizarCards(baseProcedimentos);
-});
