@@ -1,1 +1,79 @@
+# ==============================================================================
+# REPOSITÓRIO INSTITUCIONAL: MOTOR DE COMPATIBILIDADE SIGTAP
+# AUTOMAÇÃO DE SCRIPT: PARSER INTEGRADO (HTML5 / CSS3 / JAVASCRIPT)
+# DOCUMENTO-FONTE: PICS_merged.pdf
+# VIGÊNCIA ATIVA: COMPETÊNCIA 06/2026
+# STATUS DO DEPLOY: PUBLICADO / PRODUÇÃO
+# ==============================================================================
 
+[config.engine]
+framework: "Vanilla JS / HTML5 / CSS3"
+auto_parse: true
+competencia_alvo: "06/2026"
+schema_version: "2.1.0"
+target_dom_element: "#grid-dinamico-procedimentos"
+
+# ==============================================================================
+# INGESTÃO COMPLETA DE DADOS EM LOTE (BASE DATA-STORE)
+# ==============================================================================
+
+---
+classes_deficiencia: "Não se Aplica"
+Código: "0309050014"
+Nome: "SESSÃO DE ACUPUNTURA APLICAÇÃO DE VENTOSAS / MOXA"
+| Complexidade: "MC - Média Complexidade"
+| Modalidade: "01 - Ambulatorial, 02 - Hospitalar, 03 - Hospital Dia, 06 - Atenção Domiciliar"
+| Registro: "01 - BPA (Consolidado), 02 - BPA (Individualizado), 05 - AIH (Proc. Secundário)"
+| Restrição Etária: "Idade Mínima: 0 Mes(es) | Idade Máxima: 130 Ano(s)"
+| CIDs Vinculados (7): ["F430", "F431", "F432", "G430", "G431", "G442", "M541", "M542", "M544", "M545", "M791", "R51", "R520", "R521", "R522"]
+valor: "Valor Ambulatorial SA: 3.67 | Valor Ambulatorial Total: 3.67"
+---
+
+---
+classes_deficiencia: "Não se Aplica"
+Código: "0309050022"
+Nome: "SESSÃO DE ACUPUNTURA COM INSERÇÃO DE AGULHAS"
+| Complexidade: "MC - Média Complexidade"
+| Modalidade: "01 - Ambulatorial, 02 - Hospitalar, 03 - Hospital Dia, 06 - Atenção Domiciliar"
+| Registro: "01 - BPA (Consolidado), 02 - BPA (Individualizado), 05 - AIH (Proc. Secundário)"
+| Restrição Etária: "Idade Mínima: 0 Mes(es) | Idade Máxima: 130 Ano(s)"
+| CIDs Vinculados (7): ["Não se Aplica / Práticas Integrativas"]
+valor: "Valor Ambulatorial SA: 4.13 | Valor Ambulatorial Total: 4.13"
+---
+
+---
+classes_deficiencia: "Física, Sensório-Motora (Múltiplas Deficiências)"
+Código: "0301070130"
+Nome: "TRATAMENTO INTENSIVO DE PACIENTE EM REABILITAÇÃO FÍSICA (2 TURNOS PACIENTE-DIA - 20 ATENDIMENTOS-MÊS)"
+| Complexidade: "MC - Média Complexidade"
+| Modalidade: "01 - Ambulatorial"
+| Registro: "02 - BPA (Individualizado)"
+| Restrição Etária: "Idade Mínima: 0 Mes(es) | Idade Máxima: 130 Ano(s)"
+| CIDs Vinculados (7): ["A300", "A305", "A309", "B91", "B92", "C716", "C719", "G110", "G112", "G20", "G300", "G301", "G308", "G309", "G35", "G379", "G404", "G459", "G589", "G600", "G64", "G710", "G728", "G729", "G800", "G801", "G802", "G803", "G804", "G808", "G809", "G810", "G811", "G819", "G820", "G821", "G822", "G823", "G824", "G825", "G831", "G919", "G934", "G938", "G959", "G969", "G979", "I64", "I691", "I694", "I739", "M069", "M080", "M160", "M170", "M199", "M210", "M216", "M300", "M301", "M302", "M303", "M308", "M332", "M340", "M341", "M342", "M348", "M349", "M360", "M361", "M362", "M363", "M364", "M368", "M414", "M45", "M462", "M490", "M491", "M492", "M493", "M494", "M495", "M498", "M800", "M801", "M802", "M803", "M804", "M805", "M808", "M809", "M870", "Q039", "Q059", "Q720", "Q721", "Q730", "Q762", "Q780", "S062", "S068", "S069", "S122", "S141", "S143", "S241", "S320", "S341", "S383", "S581", "S780", "S781", "S880", "T093", "T903", "T905", "T913", "Z890", "Z891", "Z892", "Z893", "Z894", "Z895", "Z896", "Z897", "Z898", "Z899"]
+valor: "Valor Ambulatorial SA: 33.70 | Valor Ambulatorial Total: 33.70"
+---
+
+---
+classes_deficiencia: "Visual"
+Código: "0301070148"
+Nome: "TREINO DE ORIENTAÇÃO E MOBILIDADE"
+| Complexidade: "MC - Média Complexidade"
+| Modalidade: "01 - Ambulatorial"
+| Registro: "02 - BPA (Individualizado)"
+| Restrição Etária: "Idade Mínima: 0 Mes(es) | Idade Máxima: 130 Ano(s)"
+| CIDs Vinculados (7): ["H540", "H541"]
+valor: "Valor Ambulatorial SA: 6.00 | Valor Ambulatorial Total: 6.00"
+---
+
+# ==============================================================================
+# DIRETRIZ DE MAPEAMENTO DOM (JAVASCRIPT AUTOMATION ENGINE)
+# ==============================================================================
+# O interpretador de código JavaScript lê este arquivo txt, fragmenta nas tags 
+# "---" e converte cada chave em elementos literais injetados no renderizador:
+# element.innerHTML = `
+#    <div class="card">
+#        <span class="def-class">${item.classes_deficiencia}</span>
+#        <h2>${item.Código} - ${item.Nome}</h2>
+#        <p>${item.Modalidade}</p>
+#    </div>`;
+# ==============================================================================
