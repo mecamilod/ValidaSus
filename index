@@ -3,50 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador SIGTAP - Componente Inicial</title>
+    <title>ValidaSUS - Instituto Tech Reabilitar</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header class="main-header">
+    <header class="app-header">
         <div class="header-container">
-            <h1>Simulador SIGTAP</h1>
-            <span class="badge-competencia">Competência: 06/2026</span>
+            <div class="brand">
+                <h1>ValidaSUS</h1>
+                <p>by Tech Reabilitar</p>
+            </div>
+            <div class="meta">
+                <span class="badge-competencia">Competência v06/2026</span>
+            </div>
         </div>
     </header>
 
-    <main class="simulador-container">
-        <!-- Seção de Filtros e Busca -->
-        <section class="busca-section">
-            <div class="search-group">
-                <input type="text" id="input-busca" placeholder="Busque por código, nome do procedimento ou CID...">
-                <button id="btn-buscar" class="btn-primary">Buscar</button>
+    <main class="app-container">
+        <section class="filter-panel">
+            <h2>Filtros de Auditoria e Compatibilidade</h2>
+            <div class="filter-grid">
+                <div class="filter-control">
+                    <label for="select-classe">Classe (Tipo de Deficiência/Atuação):</label>
+                    <select id="select-classe">
+                        <option value="todos">-- Todas as Classes --</option>
+                    </select>
+                </div>
+
+                <div class="filter-control">
+                    <label for="select-forma">Forma de Organização:</label>
+                    <select id="select-forma" disabled>
+                        <option value="todos">-- Selecione uma classe primeiro --</option>
+                    </select>
+                </div>
             </div>
-            
-            <div class="filter-group">
-                <label for="filtro-deficiencia">Classe de Deficiência:</label>
-                <select id="filtro-deficiencia">
-                    <option value="todos">Todos os Procedimentos</option>
-                    <option value="Não se Aplica">Não se Aplica (PICS / Geral)</option>
-                    <option value="Física">Deficiência Física</option>
-                    <option value="Visual">Deficiência Visual</option>
-                </select>
+
+            <div class="search-bar-container">
+                <label for="search-input">Busca Rápida Cruzada (Código, Nome, CID ou CBO):</label>
+                <input type="text" id="search-input" placeholder="Digite o código do procedimento, CBO, ou um CID específico (Ex: G800)...">
             </div>
         </section>
 
-        <!-- Grade Dinâmica de Resultados -->
-        <section class="resultados-section">
-            <div class="resultados-header">
-                <h2>Procedimentos Mapeados</h2>
-                <span id="contador-resultados">Carregando procedimentos...</span>
+        <section class="results-panel">
+            <div class="results-header">
+                <h3>Procedimentos Homologados</h3>
+                <span id="counter-procedimentos">Listando 0 procedimentos</span>
             </div>
-            
-            <div id="grid-dinamico-procedimentos" class="grid-procedimentos">
-                <!-- Os cards de procedimentos serão injetados aqui pelo JavaScript -->
-            </div>
+
+            <div id="grid-procedimentos" class="procedimentos-grid">
+                </div>
         </section>
     </main>
 
+    <script src="base_sigtap.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
