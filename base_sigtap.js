@@ -1,78 +1,132 @@
-// base_sigtap.js
-const baseProcedimentosSIGTAP = {
-    "Deficiência Física e Sensório-Motora (Múltiplas)": {
-        "forma_organizacao": "01 - Atenção Especializada em Reabilitação",
-        "procedimentos": [
-            {
-                "codigo": "0301070130",
-                "nome": "TRATAMENTO INTENSIVO DE PACIENTE EM REABILITAÇÃO FÍSICA (2 TURNOS PACIENTE-DIA - 20 ATENDIMENTOS-MÊS)",
-                "descricao": "Conjunto de atividades assistenciais sequenciais e integradas, de caráter multiprofissional, destinadas a pacientes com perda funcional e/ou motora severa crônica ou aguda. O tratamento exige acompanhamento coordenado e intensivo para maximizar o ganho de independência funcional, com avaliação biopsicossocial integrada, integração ortopédica e prescrição/adequação de tecnologias assistivas e cadeiras de rodas.",
-                "complexidade": "MC - Média Complexidade",
-                "instrumento_registro": "02 - BPA (Individualizado)",
-                "restricao_etaria": "Idade Mínima: 0 Mes(es) | Idade Máxima: 130 Ano(s)",
-                "valor_ambulatorial": 33.70,
-                "cbos": ["223605 - Fisioterapeuta", "223650 - Fisio Neuro", "223660 - Fisio Ortopedia", "223905 - Terapeuta Ocupacional", "225140 - Médico Fisiatra", "225270 - Médico Ortopedista"],
-                "cids": ["G800", "G801", "G802", "G809", "G810", "G820", "G823", "I64", "I694", "M210", "S141", "Z890", "Z894", "Z899"]
-            }
-        ]
-    },
-    "Deficiência Visual": {
-        "forma_organizacao": "01 - Atenção Especializada em Reabilitação",
-        "procedimentos": [
-            {
-                "codigo": "0301070148",
-                "nome": "TREINO DE ORIENTAÇÃO E MOBILIDADE",
-                "descricao": "Processo de reabilitação global focado no desenvolvimento de competências cognitivas e motoras que permitam à pessoa com cegueira ou baixa visão locomover-se de forma independente, segura e eficiente em ambientes internos e externos, utilizando técnicas de proteção, guia humano e bengala longa.",
-                "complexidade": "MC - Média Complexidade",
-                "instrumento_registro": "02 - BPA (Individualizado)",
-                "restricao_etaria": "Idade Mínima: 0 Mes(es) | Idade Máxima: 130 Ano(s)",
-                "valor_ambulatorial": 6.00,
-                "cbos": ["223605 - Fisioterapeuta", "223905 - Terapeuta Ocupacional", "239415 - Pedagogo Especializado", "251510 - Psicólogo Clínico"],
-                "cids": ["H540", "H541", "H542", "H544"]
-            }
-        ]
-    },
-    "Práticas Integrativas e Complementares (PICS)": {
-        "forma_organizacao": "05 - Práticas Integrativas e Complementares",
-        "procedimentos": [
-            {
-                "codigo": "0309050014",
-                "nome": "SESSÃO DE ACUPUNTURA APLICAÇÃO DE VENTOSAS / MOXA",
-                "descricao": "Abordagem terapêutica que estimula pontos específicos do corpo através do calor (queima de moxa) ou vácuo mecânico (ventosaterapia). Indicado para modulação de dores crônicas, redução de espasmos e manejo do estresse.",
-                "complexidade": "MC - Média Complexidade",
-                "instrumento_registro": "01-BPA (Consolidado), 02-BPA (Individualizado)",
-                "restricao_etaria": "Idade Mínima: 0 Mes(es) | Idade Máxima: 130 Ano(s)",
-                "valor_ambulatorial": 3.67,
-                "cbos": ["223605 - Fisioterapeuta", "223905 - Terapeuta Ocupacional", "223293 - Dentista", "225103 - Médico"],
-                "cids": ["F430", "F431", "G430", "G442", "M541", "M545", "M791", "R520"]
-            },
-            {
-                "codigo": "0309050022",
-                "nome": "SESSÃO DE ACUPUNTURA COM INSERÇÃO DE AGULHAS",
-                "descricao": "Estimulação mecânica de pontos anatômicos específicos através da inserção de agulhas filiformes estéreis para modulação do sistema nervoso periférico e central, atuando na analgesia e regulação homeostática.",
-                "complexidade": "MC - Média Complexidade",
-                "instrumento_registro": "01-BPA (Consolidado), 02-BPA (Individualizado)",
-                "restricao_etaria": "Idade Mínima: 0 Mes(es) | Idade Máxima: 130 Ano(s)",
-                "valor_ambulatorial": 4.13,
-                "cbos": ["223605 - Fisioterapeuta", "223905 - Terapeuta Ocupacional", "223293 - Dentista", "225103 - Médico"],
-                "cids": ["M545", "G439", "F411", "M791", "G442", "R529"]
-            }
-        ]
-    },
-    "Saúde Bucal e Manejo Clínico PcD": {
-        "forma_organizacao": "02 - Procedimentos Odontológicos Especializados",
-        "procedimentos": [
-            {
-                "codigo": "0307010147",
-                "nome": "ADEQUAÇÃO DO COMPORTAMENTO DA PESSOA COM DEFICIÊNCIA EM ODONTOLOGIA",
-                "descricao": "Intervenção clínica focada no acolhimento, estabilização protetiva e técnicas de condicionamento psicológico para viabilizar a assistência odontológica segura a pacientes com alterações neuromotoras, cognitivas ou intelectuais em nível ambulatorial.",
-                "complexidade": "AB - Atenção Básica",
-                "instrumento_registro": "02 - BPA (Individualizado)",
-                "restricao_etaria": "Idade Mínima: 12 Mes(es) | Idade Máxima: 130 Ano(s)",
-                "valor_ambulatorial": 0.00,
-                "cbos": ["223208 - Cirurgião-Dentista", "223212 - Odontopediatra", "223276 - Dentista PcD"],
-                "cids": ["G800", "G809", "F70", "F71", "F72", "F840", "Q059"]
-            }
-        ]
+// app.js - Motor de Renderização e Auditoria Cruzada Homologado
+document.addEventListener('DOMContentLoaded', () => {
+    inicializarApp();
+});
+
+const selectClasse = document.getElementById('select-classe');
+const selectForma = document.getElementById('select-forma');
+const searchInput = document.getElementById('search-input');
+const gridProcedimentos = document.getElementById('grid-procedimentos');
+const counterProcedimentos = document.getElementById('counter-procedimentos');
+
+function inicializarApp() {
+    if (!window.baseProcedimentosSIGTAP) {
+        console.error("Erro crítico: Banco de dados base_sigtap.js não foi detectado ou carregado.");
+        gridProcedimentos.innerHTML = '<div class="card-proc" style="padding: 2rem; border-left-color: #ef4444;"><strong>Erro de Ingestão:</strong> O arquivo base_sigtap.js não pôde ser lido. Verifique os nomes dos arquivos no repositório.</div>';
+        return;
     }
-};
+
+    // Limpa opções antigas mantendo o padrão
+    selectClasse.innerHTML = '<option value="todos">-- Todas as Classes --</option>';
+    
+    // Popula as Classes mapeadas
+    Object.keys(baseProcedimentosSIGTAP).forEach(classe => {
+        const opt = document.createElement('option');
+        opt.value = classe;
+        opt.textContent = classe;
+        selectClasse.appendChild(opt);
+    });
+
+    // Listener inteligente para encadeamento e isolamento de Formas de Organização
+    selectClasse.addEventListener('change', () => {
+        const classeSel = selectClasse.value;
+        selectForma.innerHTML = '<option value="todos">-- Todas as Formas --</option>';
+        
+        if (classeSel !== 'todos' && baseProcedimentosSIGTAP[classeSel]) {
+            selectForma.disabled = false;
+            const forma = baseProcedimentosSIGTAP[classeSel].forma_organizacao;
+            const opt = document.createElement('option');
+            opt.value = forma;
+            opt.textContent = forma;
+            selectForma.appendChild(opt);
+        } else {
+            selectForma.disabled = true;
+        }
+        filtrarERenderizar();
+    });
+
+    selectForma.addEventListener('change', filtrarERenderizar);
+    searchInput.addEventListener('input', filtrarERenderizar);
+
+    // Executa a primeira renderização em lote na inicialização da página
+    filtrarERenderizar();
+}
+
+function filtrarERenderizar() {
+    const classeFiltro = selectClasse.value;
+    const formaFiltro = selectForma.value;
+    const buscaTexto = searchInput.value.toLowerCase().trim();
+
+    let listagemFinal = [];
+
+    Object.keys(baseProcedimentosSIGTAP).forEach(classeNome => {
+        if (classeFiltro !== 'todos' && classeFiltro !== classeNome) return;
+
+        const classeObjeto = baseProcedimentosSIGTAP[classeNome];
+        if (formaFiltro !== 'todos' && formaFiltro !== classeObjeto.forma_organizacao) return;
+
+        if (classeObjeto && classeObjeto.procedimentos) {
+            classeObjeto.procedimentos.forEach(proc => {
+                const matchesTexto = buscaTexto === "" || 
+                    proc.nome.toLowerCase().includes(buscaTexto) ||
+                    proc.codigo.includes(buscaTexto) ||
+                    proc.descricao.toLowerCase().includes(buscaTexto) ||
+                    (proc.cids && proc.cids.some(cid => cid.toLowerCase().includes(buscaTexto))) ||
+                    (proc.cbos && proc.cbos.some(cbo => cbo.toLowerCase().includes(buscaTexto)));
+
+                if (matchesTexto) {
+                    listagemFinal.push({
+                        ...proc,
+                        classe: classeNome,
+                        forma: classeObjeto.forma_organizacao
+                    });
+                }
+            });
+        }
+    });
+
+    renderizarCards(listagemFinal);
+}
+
+function renderizarCards(procedimentos) {
+    gridProcedimentos.innerHTML = '';
+    counterProcedimentos.textContent = `Listando ${procedimentos.length} procedimento(s)`;
+
+    if (procedimentos.length === 0) {
+        gridProcedimentos.innerHTML = '<div class="card-proc" style="padding: 2rem; text-align: center; color: var(--text-muted); border-left-color: #cbd5e1;">Nenhum procedimento correspondente aos critérios de validação da Tech Reabilitar.</div>';
+        return;
+    }
+
+    procedimentos.forEach(proc => {
+        const card = document.createElement('article');
+        card.className = 'card-proc';
+
+        const cidsHtml = proc.cids ? proc.cids.map(cid => `<span class="pill-cid">${cid}</span>`).join('') : 'Não aplicável';
+        const cbosHtml = proc.cbos ? proc.cbos.map(cbo => `<span class="pill-cbo">${cbo}</span>`).join('') : 'Não aplicável';
+
+        card.innerHTML = `
+            <div class="card-main-info">
+                <div class="card-meta-top">
+                    <span>${proc.classe}</span>
+                    <span>Forma de Organização: ${proc.forma}</span>
+                </div>
+                <h3>${proc.nome}</h3>
+                <span class="card-codigo-sus">Código SIGTAP: ${proc.codigo}</span>
+                <p class="card-desc">${proc.descricao}</p>
+                
+                <div class="spec-grid">
+                    <div class="spec-item"><strong>Complexidade</strong>${proc.complexidade}</div>
+                    <div class="spec-item"><strong>Instrumento de Registro</strong>${proc.instrumento_registro}</div>
+                    <div class="spec-item"><strong>Restrição Etária</strong>${proc.restricao_etaria}</div>
+                    <div class="spec-item"><strong>CBOs Autorizados</strong><div class="pill-container">${cbosHtml}</div></div>
+                    <div class="spec-item" style="grid-column: span 2;"><strong>CIDs Vinculados</strong><div class="pill-container">${cidsHtml}</div></div>
+                </div>
+            </div>
+            <div class="card-footer-valor">
+                <span class="valor-label">VALOR DO REPASSE AMBULATORIAL:</span>
+                <span class="valor-dinheiro">R$ ${proc.valor_ambulatorial.toFixed(2).replace('.', ',')}</span>
+            </div>
+        `;
+        gridProcedimentos.appendChild(card);
+    });
+}
